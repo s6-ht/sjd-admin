@@ -1,0 +1,26 @@
+.titleContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+
+  .title {
+    color: #1677ff;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  &::before {
+    position: absolute;
+    left: -12px;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    display: block;
+    content: "";
+    width: 4px;
+    height: 30px;
+    background: #1677ff;
+  }
+}

@@ -1,9 +1,12 @@
+import { useSetState } from "ahooks";
 import ConfigNav from "./components/ConfigNav";
 import ConfigPanel from "./components/ConfigPanel";
 import PreviewPanel from "./components/PreviewPanel";
 import styles from "./index.less";
 
 const CreateActivity = () => {
+  // const [] = useSetState({})
+
   return (
     <div className={styles.createActivity}>
       <div className={styles.previewContainer}>

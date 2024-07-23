@@ -24,14 +24,14 @@ export default function Navigation({ nav }: INavigationProps) {
               })}
               key={item.path}
               onClick={() => {
-                if (children.length) {
-                  history.push(children[0].path);
-                  return;
-                }
+                // if (children.length) {
+                //   history.push(children[0].path);
+                //   return;
+                // }
                 history.push(item.path);
               }}
             >
-              {item.icon({})}
+              {item.icon?.({})}
               <span className={styles.menuName}>{item.name}</span>
             </div>
           );

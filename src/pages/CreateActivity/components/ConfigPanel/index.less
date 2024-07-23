@@ -1,0 +1,32 @@
+.configPanel {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  width: 400px;
+  height: calc(100vh - 50px);
+  background: #fff;
+
+  :global {
+    .ant-collapse-content-box,
+    .ant-collapse-header {
+      padding: 12px !important;
+    }
+
+    .ant-collapse-header,
+    .ant-collapse {
+      border-radius: 0 !important;
+    }
+
+    .ant-collapse {
+      border: none !important;
+    }
+  }
+
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 16px;
+    padding: 0 12px;
+  }
+}

@@ -1,0 +1,96 @@
+.templateManage {
+  margin: 16px;
+  padding: 16px;
+  background-color: #fff;
+  min-height: calc(100vh - 82px);
+  border-radius: 4px;
+
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .types {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .label {
+      color: #606266;
+      font-size: 12px;
+    }
+  }
+
+  .list {
+    display: flex;
+    column-gap: 1.2%;
+    row-gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+}
+
+.templateCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 15.66%;
+  border: 1px solid #f1f2f4;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+
+  .cover {
+    width: 100%;
+    height: 124px;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  .title {
+    margin-bottom: 8px;
+    color: #333;
+    font-size: 14px;
+    word-break: break-all;
+    padding-inline: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-top: 12px;
+    white-space: nowrap;
+    word-break: break-all;
+  }
+
+  .desc {
+    height: 32px;
+    margin: 4px 0 12px;
+    padding: 0 12px;
+    line-height: 16px;
+    font-size: 12px;
+    color: #666;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 这里设置文本行数 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-all;
+  }
+
+  .tags {
+    position: absolute;
+    top: 90px;
+    left: 12px;
+
+    .tag {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3px 6px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      color: #fff;
+      font-size: 12px;
+      cursor: default;
+    }
+  }
+}

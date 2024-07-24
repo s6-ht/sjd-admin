@@ -20,6 +20,14 @@
     .ant-collapse {
       border: none !important;
     }
+
+    .ant-form-item-required {
+      width: 100% !important;
+
+      &::after {
+        margin: 0 !important;
+      }
+    }
   }
 
   .footer {
@@ -39,5 +47,25 @@
   .tip {
     font-size: 12px;
     color: rgb(153, 153, 153);
+  }
+
+  .label {
+    color: rgb(153, 153, 153);
+    font-size: 13px;
+  }
+
+  .customContainer {
+    .customContent {
+      background: #f6f7f9;
+      border-radius: 6px;
+      padding: 12px;
+      margin-top: 8px;
+    }
+
+    .customItem {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
   }
 }

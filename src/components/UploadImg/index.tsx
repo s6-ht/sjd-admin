@@ -1,19 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
-import type { GetProp, UploadFile, UploadProps } from "antd";
+import type { UploadFile } from "antd";
 import styles from "./index.less";
 import _ from "lodash";
-
-type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
-
-const getBase64 = (file: FileType): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = (error) => reject(error);
-  });
 
 const supportFileFormats = ["PNG", "JPEG", "JPG"];
 const fileSizeLimit = 10 * 1024 * 1024;

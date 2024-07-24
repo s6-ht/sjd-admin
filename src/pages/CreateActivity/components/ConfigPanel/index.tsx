@@ -5,8 +5,13 @@ import BlockTitle from "./components/BlockTitle";
 import { useState } from "react";
 import { history } from "umi";
 import { ICreateActivityReq } from "@/services/activity/types";
+import { Dayjs } from "dayjs";
 
-const ConfigPanel = () => {
+interface IConfigPanelProps {
+  onChangeFormValues: (data: Partial<IConfigFormValues>) => void;
+}
+
+const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
   const [expandKeys, setExpandKeys] = useState(["BASE_CONFIG"]);
 
   const [form] = Form.useForm<IConfigFormValues>();
@@ -18,7 +23,14 @@ const ConfigPanel = () => {
   };
 
   return (
-    <Form form={form} layout="vertical" className={styles.configPanel}>
+    <Form
+      form={form}
+      layout="vertical"
+      className={styles.configPanel}
+      onValuesChange={(data) => {
+        onChangeFormValues(data);
+      }}
+    >
       <Collapse
         expandIconPosition="end"
         activeKey={expandKeys}
@@ -27,7 +39,9 @@ const ConfigPanel = () => {
           {
             key: "BASE_CONFIG",
             label: <BlockTitle title="基础样式配置" />,
-            children: <BaseConfig form={form} />,
+            children: (
+              <BaseConfig onChangeFormValues={onChangeFormValues} form={form} />
+            ),
           },
         ]}
       ></Collapse>
@@ -51,4 +65,6 @@ export default ConfigPanel;
 export interface IConfigFormValues
   extends Omit<ICreateActivityReq, "coverUrl"> {
   cover: File;
+  themeColor: string;
+  dateRange: Dayjs[];
 }

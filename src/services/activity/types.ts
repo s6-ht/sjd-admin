@@ -33,7 +33,8 @@ export interface ICreateActivityReq {
   startTime: number;
   endTime: number;
   backgroundColor?: string;
-  countTimeColor?: string;
+  countTimeBcgColor?: string;
+  countTimeTextColor?: string;
   /** 分享封面 */
   shareCardCoverUrl?: string;
   /** 分享标题 */

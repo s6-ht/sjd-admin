@@ -2,7 +2,7 @@ import styles from "./index.less";
 import { ReactNode } from "react";
 
 interface IConfigItemTitleProps {
-  title: string;
+  title: string | ReactNode;
   rightContent?: ReactNode;
 }
 

@@ -4,7 +4,8 @@ import "../styles/globals.css";
 import { useMemo } from "react";
 import primaryNav, { ISidebarNavItem, hasPath } from "./primaryNav";
 import SideBar from "./components/SideBar";
-import { Breadcrumb } from "antd";
+import { Breadcrumb, ConfigProvider } from "antd";
+import zhCN from "antd/locale/zh_CN";
 
 export default function Layout() {
   const location = useLocation();
@@ -40,15 +41,17 @@ export default function Layout() {
   }, [location.pathname]);
 
   return (
-    <div className={styles.layout}>
-      {sideBar}
-      <div className={styles.content}>
-        <div className={styles.header}>
-          <Breadcrumb items={activeMenuList} />
+    <ConfigProvider locale={zhCN}>
+      <div className={styles.layout}>
+        {sideBar}
+        <div className={styles.content}>
+          <div className={styles.header}>
+            <Breadcrumb items={activeMenuList} />
+          </div>
+          <Outlet />
         </div>
-        <Outlet />
       </div>
-    </div>
+    </ConfigProvider>
   );
 }
 

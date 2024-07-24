@@ -4,11 +4,12 @@ import styles from "./index.less";
 import BlockTitle from "./components/BlockTitle";
 import { useState } from "react";
 import { history } from "umi";
+import { ICreateActivityReq } from "@/services/activity/types";
 
 const ConfigPanel = () => {
   const [expandKeys, setExpandKeys] = useState(["BASE_CONFIG"]);
 
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<IConfigFormValues>();
 
   const onPublish = () => {
     form.validateFields().then((values) => {
@@ -26,7 +27,7 @@ const ConfigPanel = () => {
           {
             key: "BASE_CONFIG",
             label: <BlockTitle title="基础样式配置" />,
-            children: <BaseConfig />,
+            children: <BaseConfig form={form} />,
           },
         ]}
       ></Collapse>
@@ -46,3 +47,8 @@ const ConfigPanel = () => {
   );
 };
 export default ConfigPanel;
+
+export interface IConfigFormValues
+  extends Omit<ICreateActivityReq, "coverUrl"> {
+  cover: File;
+}

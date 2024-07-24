@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { PlusOutlined } from "@ant-design/icons";
 import { Upload } from "antd";
 import type { GetProp, UploadFile, UploadProps } from "antd";
 import styles from "./index.less";
+import _ from "lodash";
 
 type FileType = Parameters<GetProp<UploadProps, "beforeUpload">>[0];
 
@@ -14,13 +15,25 @@ const getBase64 = (file: FileType): Promise<string> =>
     reader.onerror = (error) => reject(error);
   });
 
+const supportFileFormats = ["PNG", "JPEG", "JPG"];
+const fileSizeLimit = 10 * 1024 * 1024;
+
 interface IUploadImgProps {
   limit?: number;
   uploadText?: string;
+  tips?: string[];
+  onValidateFileFormat?: (errorMsg: string[]) => void;
+  onChange?: (file: File) => void;
 }
 
-const UploadImg = ({ limit = 1, uploadText = "上传" }: IUploadImgProps) => {
-  const [fileList, setFileList] = useState<UploadFile[]>([
+const UploadImg = ({
+  limit = 1,
+  uploadText = "上传",
+  tips = [],
+  onValidateFileFormat,
+  onChange,
+}: IUploadImgProps) => {
+  const [fileList] = useState<UploadFile[]>([
     {
       uid: "-1",
       name: "image.png",
@@ -29,29 +42,69 @@ const UploadImg = ({ limit = 1, uploadText = "上传" }: IUploadImgProps) => {
     },
   ]);
 
-  const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) =>
-    setFileList(newFileList);
+  const [file, setFile] = useState<File>();
+
+  const onBeforeUpload = useCallback(
+    (file: File) => {
+      const fileType = getFileTypeByName(file.name);
+
+      const errorMsg: string[] = [];
+
+      if (file.size > fileSizeLimit) {
+        errorMsg.push("图片大小不能超过10M");
+      }
+
+      if (supportFileFormats.includes(_.toUpper(fileType))) {
+        errorMsg.push("只支持jpg、png、jpeg格式");
+      }
+      if (errorMsg?.length > 0) {
+        onValidateFileFormat?.(errorMsg);
+      } else {
+        setFile(file);
+        onChange?.(file);
+      }
+      return false;
+    },
+    [onValidateFileFormat, onChange]
+  );
 
   return (
-    <div className={styles.uploadContainer}>
-      {fileList.map((item) => (
-        <div className={styles.imgItem}>
-          <img width={100} height={100} src={item.url} />
-          <Upload className={styles.upload} onChange={handleChange}>
-            <div className={styles.mask}>替换图片</div>
-          </Upload>
-        </div>
-      ))}
-      {fileList.length < limit && (
-        <Upload className={styles.upload} onChange={handleChange}>
-          <div className={styles.addImg}>
-            <PlusOutlined />
-            <div style={{ marginTop: 8 }}>{uploadText}</div>
+    <>
+      <div className={styles.uploadContainer}>
+        {fileList.map((item) => (
+          <div className={styles.imgItem}>
+            <img width={70} height={70} src={item.url} />
+            <Upload className={styles.upload} beforeUpload={onBeforeUpload}>
+              <div className={styles.mask}>替换图片</div>
+            </Upload>
           </div>
-        </Upload>
-      )}
-    </div>
+        ))}
+        {fileList.length < limit && (
+          <Upload
+            className={styles.upload}
+            showUploadList={false}
+            beforeUpload={onBeforeUpload}
+          >
+            <div className={styles.addImg}>
+              <PlusOutlined />
+              <div style={{ marginTop: 8 }}>{uploadText}</div>
+            </div>
+          </Upload>
+        )}
+      </div>
+      <div className={styles.tips}>
+        {tips.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+        <span>支持jpg、png、jpeg格式，且图片限制在10M以内。</span>
+      </div>
+    </>
   );
 };
 
 export default UploadImg;
+
+function getFileTypeByName(name: string) {
+  const nameList = name?.split(".") || [];
+  return nameList[nameList.length - 1];
+}

@@ -6,13 +6,18 @@ import { useState } from "react";
 import { history } from "umi";
 import { ICreateActivityReq } from "@/services/activity/types";
 import { Dayjs } from "dayjs";
+import ShareSettings from "./ShareSettings";
+import { defaultCreateActivityValues } from "../../constant";
 
 interface IConfigPanelProps {
   onChangeFormValues: (data: Partial<IConfigFormValues>) => void;
 }
 
 const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
-  const [expandKeys, setExpandKeys] = useState(["BASE_CONFIG"]);
+  const [expandKeys, setExpandKeys] = useState([
+    // "BASE_CONFIG",
+    "SHARE_SETTINGS",
+  ]);
 
   const [form] = Form.useForm<IConfigFormValues>();
 
@@ -30,6 +35,7 @@ const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
       onValuesChange={(data) => {
         onChangeFormValues(data);
       }}
+      initialValues={defaultCreateActivityValues}
     >
       <Collapse
         expandIconPosition="end"
@@ -41,6 +47,16 @@ const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
             label: <BlockTitle title="基础样式配置" />,
             children: (
               <BaseConfig onChangeFormValues={onChangeFormValues} form={form} />
+            ),
+          },
+          {
+            key: "SHARE_SETTINGS",
+            label: <BlockTitle title="分享卡片设置" />,
+            children: (
+              <ShareSettings
+                onChangeFormValues={onChangeFormValues}
+                form={form}
+              />
             ),
           },
         ]}
@@ -64,7 +80,8 @@ export default ConfigPanel;
 
 export interface IConfigFormValues
   extends Omit<ICreateActivityReq, "coverUrl"> {
-  cover: File;
+  cover?: File;
   themeColor: string;
-  dateRange: Dayjs[];
+  activityTimeRange: Dayjs[];
+  shareCardCoverFile?: File;
 }

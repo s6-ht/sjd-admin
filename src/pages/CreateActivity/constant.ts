@@ -5,10 +5,11 @@ export const defaultCreateActivityValues = {
   title: "粽情端午免单节，198元组团抢购最高10节",
   titleShow: true,
   backgroundColor: "",
-  dateRange: [
+  activityTimeRange: [
     dayjs().subtract(1, "day").set("hour", 12).set("minute", 30),
     dayjs().add(1, "day").set("hour", 18).set("minute", 10),
   ],
   countTimeBcgColor: "red",
   countTimeTextColor: "#fff",
+  shareCardContent: "粽情端午免单节，198元组团抢购最高10节，快来抢购吧",
 };

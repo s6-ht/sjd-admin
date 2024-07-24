@@ -10,12 +10,12 @@ interface IBaseConfigPreviewProps {
 
 const BaseConfigPreview = ({ formValues }: IBaseConfigPreviewProps) => {
   const timeRange = useMemo(() => {
-    const [startTime, endTime] = formValues.dateRange || [];
+    const [startTime, endTime] = formValues.activityTimeRange || [];
     return {
       startTime: startTime.isValid() ? startTime.valueOf() : 0,
       endTime: endTime.isValid() ? endTime.valueOf() : 0,
     };
-  }, [formValues.dateRange]);
+  }, [formValues.activityTimeRange]);
 
   return (
     <>

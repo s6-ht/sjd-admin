@@ -59,7 +59,7 @@ const UploadImg = ({
   );
 
   return (
-    <>
+    <div>
       <div className={styles.uploadContainer}>
         {fileList.map((item) => (
           <div className={styles.imgItem}>
@@ -82,13 +82,7 @@ const UploadImg = ({
           </Upload>
         )}
       </div>
-      <div className={styles.tips}>
-        {tips.map((item) => (
-          <span key={item}>{item}</span>
-        ))}
-        <span>支持jpg、png、jpeg格式，且图片限制在10M以内。</span>
-      </div>
-    </>
+    </div>
   );
 };
 

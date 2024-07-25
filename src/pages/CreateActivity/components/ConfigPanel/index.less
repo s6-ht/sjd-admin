@@ -2,7 +2,7 @@
   position: absolute;
   right: 0;
   top: 50px;
-  width: 400px;
+  width: 450px;
   height: calc(100vh - 50px);
   background: #fff;
 
@@ -50,6 +50,7 @@
   }
 
   .label {
+    flex-shrink: 0;
     color: rgb(153, 153, 153);
     font-size: 13px;
   }
@@ -75,14 +76,69 @@
     align-items: center;
   }
 
-  .flexContainer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   .formItemRight {
     position: absolute;
     left: 320px;
+  }
+
+  .flexRowStart {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .flexRowBetweenWithGap {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .flexColumnStart {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .flexRowBetweenCenter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .minMarginBottom {
+    margin-bottom: 10px;
+
+    :global {
+      .ant-input-number-group-addon {
+        font-size: 12px !important;
+        padding: 0 6px !important;
+      }
+    }
+  }
+
+  .formItemLabel {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: rgba(0, 0, 0, 0.88);
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .addonAfter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.02);
+    border: 1px solid #d9d9d9;
+    color: rgba(0, 0, 0, 0.88);
+    padding: 0 6px;
+    color: rgba(0, 0, 0, 0.88);
+    font-weight: normal;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 0 6px 6px 0;
+    margin-left: -1px;
   }
 }

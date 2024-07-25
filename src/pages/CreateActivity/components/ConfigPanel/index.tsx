@@ -4,10 +4,11 @@ import styles from "./index.less";
 import BlockTitle from "./components/BlockTitle";
 import { useState } from "react";
 import { history } from "umi";
-import { ICreateActivityReq } from "@/services/activity/types";
+import { EBooleanFlag, ICreateActivityReq } from "@/services/activity/types";
 import { Dayjs } from "dayjs";
-import ShareSettings from "./ShareSettings";
+// import ShareSettings from "./ShareSettings";
 import { defaultCreateActivityValues } from "../../constant";
+import GroupBuy from "./GroupBuy";
 
 interface IConfigPanelProps {
   onChangeFormValues: (data: Partial<IConfigFormValues>) => void;
@@ -17,6 +18,7 @@ const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
   const [expandKeys, setExpandKeys] = useState([
     // "BASE_CONFIG",
     "SHARE_SETTINGS",
+    "GROUP_BUY",
   ]);
 
   const [form] = Form.useForm<IConfigFormValues>();
@@ -33,6 +35,7 @@ const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
       layout="vertical"
       className={styles.configPanel}
       onValuesChange={(data) => {
+        console.log(data, "data");
         onChangeFormValues(data);
       }}
       initialValues={defaultCreateActivityValues}
@@ -50,15 +53,22 @@ const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
             ),
           },
           {
-            key: "SHARE_SETTINGS",
-            label: <BlockTitle title="分享卡片设置" />,
+            key: "GROUP_BUY",
+            label: <BlockTitle title="拼团商品配置" />,
             children: (
-              <ShareSettings
-                onChangeFormValues={onChangeFormValues}
-                form={form}
-              />
+              <GroupBuy onChangeFormValues={onChangeFormValues} form={form} />
             ),
           },
+          // {
+          //   key: "SHARE_SETTINGS",
+          //   label: <BlockTitle title="分享卡片设置" />,
+          //   children: (
+          //     <ShareSettings
+          //       onChangeFormValues={onChangeFormValues}
+          //       form={form}
+          //     />
+          //   ),
+          // },
         ]}
       ></Collapse>
       <div className={styles.footer}>
@@ -79,9 +89,20 @@ const ConfigPanel = ({ onChangeFormValues }: IConfigPanelProps) => {
 export default ConfigPanel;
 
 export interface IConfigFormValues
-  extends Omit<ICreateActivityReq, "coverUrl"> {
+  extends Omit<ICreateActivityReq, "coverUrl" | "activityDetail"> {
   cover?: File;
   themeColor: string;
   activityTimeRange: Dayjs[];
   shareCardCoverFile?: File;
+  goodsPic?: File;
+  goodsName: string;
+  originalPrice: number;
+  originalPriceShow: EBooleanFlag;
+  goodsNum: number;
+  payPrice: number;
+  buyButtonText?: string;
+  writeOffTime?: Dayjs;
+  canUsedTime?: number;
+  singleBuy: EBooleanFlag;
+  singlePrice?: number;
 }

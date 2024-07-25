@@ -14,6 +14,7 @@ interface IUploadImgProps {
   tips?: string[];
   onValidateFileFormat?: (errorMsg: string[]) => void;
   onChange?: (file: File) => void;
+  imgWidth?: number;
 }
 
 const UploadImg = ({
@@ -22,6 +23,7 @@ const UploadImg = ({
   tips = [],
   onValidateFileFormat,
   onChange,
+  imgWidth = 80,
 }: IUploadImgProps) => {
   const [fileList] = useState<UploadFile[]>([
     {
@@ -62,8 +64,11 @@ const UploadImg = ({
     <div>
       <div className={styles.uploadContainer}>
         {fileList.map((item) => (
-          <div className={styles.imgItem}>
-            <img width={70} height={70} src={item.url} />
+          <div
+            className={styles.imgItem}
+            style={{ width: imgWidth, height: imgWidth }}
+          >
+            <img width={imgWidth} height={imgWidth} src={item.url} />
             <Upload className={styles.upload} beforeUpload={onBeforeUpload}>
               <div className={styles.mask}>替换图片</div>
             </Upload>
@@ -75,7 +80,10 @@ const UploadImg = ({
             showUploadList={false}
             beforeUpload={onBeforeUpload}
           >
-            <div className={styles.addImg}>
+            <div
+              className={styles.addImg}
+              style={{ width: imgWidth, height: imgWidth }}
+            >
               <PlusOutlined />
               <div style={{ marginTop: 8 }}>{uploadText}</div>
             </div>

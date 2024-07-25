@@ -33,13 +33,14 @@ export interface ICreateActivityReq {
   startTime: number;
   endTime: number;
   backgroundColor?: string;
+  /** 倒计时背景色 */
   countTimeBcgColor?: string;
+  /** 倒计时字体颜色 */
   countTimeTextColor?: string;
   /** 分享封面 */
   shareCardCoverUrl?: string;
   /** 分享标题 */
   shareCardContent?: string;
-
   signUps: {
     /** 信息类型 */
     contentTypeName: string;
@@ -50,11 +51,17 @@ export interface ICreateActivityReq {
   };
   activityDetail: {
     groupBy: {
+      /** 商品图片 */
+      goodsPicUrl?: string;
       goodsName: string;
       originalPriceShow: EBooleanFlag;
       payPrice: number;
       /** 最晚自动核销时间 */
       autoWriteOffTime: number;
+      /** 最晚使用时间 */
+      canUsedTime: number;
+      /** 拼团按钮文案 */
+      buyButtonText?: string;
       singleBuy: EBooleanFlag;
       singlePrice: number;
       /** 显示开团列表 */
@@ -82,6 +89,7 @@ export interface ICreateActivityReq {
       goodsNum: number;
       originalPrice: number;
       originalPriceShow: EBooleanFlag;
+      payPrice: number;
       /** 底价 */
       basePrice: number;
       /** 最低邀请人数 */

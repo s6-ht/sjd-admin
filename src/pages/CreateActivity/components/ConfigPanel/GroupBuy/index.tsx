@@ -9,37 +9,58 @@ import {
   InputNumber,
   Switch,
 } from "antd";
-import { IConfigFormValues } from "..";
 import ConfigItemTitle from "../components/ConfigItemTitle";
 import styles from "../index.less";
-import { useCallback, useState } from "react";
-import { DeleteOutlined } from "@ant-design/icons";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { EBooleanFlag } from "@/services/activity/types";
+import {
+  IConfigFormValues,
+  TCreateLadderItem,
+} from "@/pages/CreateActivity/types";
+import { transformBooleanToNum } from "@/pages/CreateActivity/helper";
+import { genId } from "@/common/utils/genId";
+import { useDebounceFn } from "ahooks";
+import classNames from "classnames";
+
+const LADDER_LIMIT = 5;
 
 interface IBaseConfigProps {
   form: FormInstance<IConfigFormValues>;
-  onChangeFormValues: (data: Partial<IConfigFormValues>) => void;
+  onChangeFormValues: (
+    data: Partial<IConfigFormValues>,
+    needUpdateForm?: boolean
+  ) => void;
+  ladderList: TCreateLadderItem[];
+  originalPriceShow?: EBooleanFlag;
 }
 
-const GroupBuy = ({ form, onChangeFormValues }: IBaseConfigProps) => {
-  const originalPriceShow = Form.useWatch("originalPriceShow", form);
+const GroupBuy = ({
+  form,
+  onChangeFormValues,
+  ladderList,
+  originalPriceShow = EBooleanFlag.TRUE,
+}: IBaseConfigProps) => {
   const singleBuy = Form.useWatch("singleBuy", form);
   const singlePrice = Form.useWatch("singlePrice", form);
 
-  const onChange = useCallback(
-    (key: keyof IConfigFormValues, value: any) => {
-      form.setFieldValue(key, value);
-      onChangeFormValues({ [key]: value });
+  const changeLadderInfo = (id: string, data: Record<string, number>) => {
+    const newLadderList = ladderList.map((item) =>
+      item.id === id ? { ...item, ...data } : item
+    );
+    onChangeFormValues({ ladderList: newLadderList }, false);
+  };
+
+  const { run: changeLadderInfoDebounce } = useDebounceFn(
+    (id: string, data: Record<string, number>) => {
+      changeLadderInfo(id, data);
     },
-    [onChangeFormValues]
+    { wait: 300 }
   );
 
   return (
     <div className={styles.groupBuy}>
       <div className={styles.flexRowBetweenWithGap}>
-        <Form.Item name="goodsPic">
-          <UploadImg imgWidth={108} />
-        </Form.Item>
+        <UploadImg imgWidth={108} />
         <div className={styles.flexColumnStart}>
           <Form.Item name="goodsName" className={styles.minMarginBottom}>
             <Input.TextArea
@@ -50,12 +71,11 @@ const GroupBuy = ({ form, onChangeFormValues }: IBaseConfigProps) => {
               onBlur={() => {
                 const goodsName = form.getFieldValue("goodsName");
                 if (!goodsName?.trim()) {
-                  onChange("goodsName", "商品1");
+                  onChangeFormValues({ goodsName: "商品" });
                 }
               }}
             />
           </Form.Item>
-          <Form.Item name={"originalPriceShow"} hidden />
           <div className={styles.flexRowBetweenCenter}>
             <Form.Item name="originalPrice" className={styles.minMarginBottom}>
               <InputNumber
@@ -67,10 +87,14 @@ const GroupBuy = ({ form, onChangeFormValues }: IBaseConfigProps) => {
             <Checkbox
               checked={originalPriceShow === EBooleanFlag.TRUE}
               className={styles.minMarginBottom}
-              onChange={(checked) => {
-                const value = checked ? EBooleanFlag.FALSE : EBooleanFlag.TRUE;
-                onChange("originalPriceShow", value);
-              }}
+              onChange={(e) =>
+                onChangeFormValues(
+                  {
+                    originalPriceShow: transformBooleanToNum(e.target.checked),
+                  },
+                  false
+                )
+              }
             >
               显示原价
             </Checkbox>
@@ -80,7 +104,7 @@ const GroupBuy = ({ form, onChangeFormValues }: IBaseConfigProps) => {
               <InputNumber
                 addonBefore="商品数量"
                 style={{ width: 150 }}
-                min={1}
+                min={0}
               />
             </Form.Item>
             <Form.Item
@@ -146,28 +170,71 @@ const GroupBuy = ({ form, onChangeFormValues }: IBaseConfigProps) => {
         </div>
         <Switch size="small" />
       </div>
-      <Form.Item required>
+      <Form.Item name="singlePrice" required>
         <InputNumber style={{ width: "100%" }} addonBefore="单买价" />
       </Form.Item>
       <div className={styles.customContainer}>
         <ConfigItemTitle
           title={<div className={styles.coverLabel}>拼团价格配置</div>}
         />
-        <div className={styles.customContent}>
-          <div className={styles.customItem}>
-            <div className={styles.label}>阶梯1</div>
-            <div className={styles.flexRowBetweenWithGap}>
-              <InputNumber style={{ width: "100%" }} addonBefore="成团人数" />
-              <InputNumber style={{ width: "100%" }} addonBefore="拼团价" />
-              <DeleteOutlined />
+        <div className={classNames(styles.customContent, styles.ladderList)}>
+          {ladderList.map((item, index) => (
+            <div key={item.id} className={styles.ladderItem}>
+              <div className={styles.label}>阶梯{index + 1}</div>
+              <div className={styles.flexRowBetweenWithGap}>
+                <InputNumber
+                  defaultValue={item.groupNum}
+                  style={{ width: "100%" }}
+                  addonBefore="成团人数"
+                  min={1}
+                  onChange={(val) => {
+                    changeLadderInfoDebounce(item.id, { groupNum: val || 0 });
+                  }}
+                />
+                <InputNumber
+                  defaultValue={item.groupPrice}
+                  style={{ width: "100%" }}
+                  addonBefore="拼团价"
+                  min={0}
+                  onChange={(val) => {
+                    changeLadderInfoDebounce(item.id, { groupPrice: val || 0 });
+                  }}
+                />
+                {ladderList.length > 1 && (
+                  <DeleteOutlined
+                    onClick={() => {
+                      const newLadderList = ladderList.filter(
+                        (ladder) => ladder.id !== item.id
+                      );
+                      onChangeFormValues({ ladderList: newLadderList });
+                    }}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-          <Button style={{ marginTop: 12 }} type="dashed" block>
-            添加阶梯
-          </Button>
+          ))}
+          {ladderList.length <= LADDER_LIMIT && (
+            <Button
+              style={{ marginTop: 4 }}
+              type="dashed"
+              onClick={() => {
+                onChangeFormValues({
+                  ladderList: [...ladderList, genLadderItem()],
+                });
+              }}
+              icon={<PlusOutlined />}
+              block
+            >
+              添加阶梯
+            </Button>
+          )}
         </div>
       </div>
     </div>
   );
 };
 export default GroupBuy;
+
+export function genLadderItem() {
+  return { id: genId(), groupNum: 1, groupPrice: 0 };
+}

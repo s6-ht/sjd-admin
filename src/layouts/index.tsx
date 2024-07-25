@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "umi";
 import styles from "./index.less";
 import "../styles/globals.css";
+import "../styles/antd.less";
 import { useMemo } from "react";
 import primaryNav, { ISidebarNavItem, hasPath } from "./primaryNav";
 import SideBar from "./components/SideBar";

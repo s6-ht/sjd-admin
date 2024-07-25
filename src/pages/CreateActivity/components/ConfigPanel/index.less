@@ -1,10 +1,15 @@
+@configPanelWidth: 450px;
+@footerHeight: 60px;
+
 .configPanel {
   position: absolute;
   right: 0;
   top: 50px;
-  width: 450px;
+  width: @configPanelWidth;
   height: calc(100vh - 50px);
+  overflow: auto;
   background: #fff;
+  padding-bottom: @footerHeight;
 
   :global {
     .ant-collapse-content-box,
@@ -31,11 +36,17 @@
   }
 
   .footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: flex-end;
+    width: @configPanelWidth;
+    height: @footerHeight;
     gap: 16px;
     padding: 0 12px;
+    background: #fff;
   }
 
   .coverLabel {
@@ -50,24 +61,28 @@
   }
 
   .label {
+    height: 32px;
+    line-height: 32px;
     flex-shrink: 0;
     color: rgb(153, 153, 153);
     font-size: 13px;
   }
 
   .customContainer {
-    .customContent {
-      background: #f6f7f9;
-      border-radius: 6px;
-      padding: 12px;
-      margin-top: 8px;
-    }
+    margin-top: 12px;
+  }
 
-    .customItem {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+  .customContent {
+    background: #f6f7f9;
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 8px;
+  }
+
+  .customItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
   }
 
   .uploadContainer {
@@ -84,6 +99,12 @@
   .flexRowStart {
     display: flex;
     align-items: flex-start;
+  }
+
+  .flexRowAlignCenter {
+    display: flex;
+    align-items: center;
+    gap: 4px;
   }
 
   .flexRowBetweenWithGap {
@@ -120,9 +141,16 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    flex-shrink: 0;
+    height: 32px;
+    line-height: 1;
     color: rgba(0, 0, 0, 0.88);
     font-size: 14px;
     margin-bottom: 8px;
+
+    &.noMargin {
+      margin-bottom: 0;
+    }
   }
 
   .addonAfter {
@@ -140,5 +168,73 @@
     text-align: center;
     border-radius: 0 6px 6px 0;
     margin-left: -1px;
+  }
+
+  .distributionPriceItem {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-left: 8px;
+
+    .gapLine {
+      height: 32px;
+      align-self: flex-start;
+      line-height: 32px;
+      margin: 0 6px;
+    }
+  }
+
+  .tipContainer {
+    padding: 0 12px;
+    list-style: disc;
+  }
+
+  .formItemError {
+    color: #ff4d4f;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .signUpItem {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 32px;
+    padding: 0 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.65);
+    border-radius: 4px;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    cursor: pointer;
+
+    &:hover {
+      border-color: #1677ff;
+    }
+
+    &.disabled {
+      background: #f5f5f5;
+      color: rgba(0, 0, 0, 0.25);
+      cursor: default;
+    }
+
+    .closeIcon {
+      position: absolute;
+      right: -7px;
+      top: -7px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  }
+
+  .ladderList {
+
+    .ladderItem {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
   }
 }

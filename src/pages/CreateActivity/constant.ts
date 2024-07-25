@@ -1,10 +1,16 @@
-import { EBooleanFlag } from "@/services/activity/types";
+import { genId } from "@/common/utils/genId";
+import {
+  EBooleanFlag,
+  EContentType,
+  EGetDistributionType,
+} from "@/services/activity/types";
 import dayjs, { Dayjs } from "dayjs";
+import { IConfigFormValues } from "./types";
 
-export const defaultCreateActivityValues = {
+export const defaultCreateActivityValues: IConfigFormValues = {
   themeColor: "red",
   title: "粽情端午免单节，198元组团抢购最高10节",
-  titleShow: true,
+  titleShow: EBooleanFlag.TRUE,
   backgroundColor: "",
   activityTimeRange: [
     dayjs().subtract(1, "day").set("hour", 12).set("minute", 30),
@@ -25,6 +31,37 @@ export const defaultCreateActivityValues = {
     .set("minute", 0)
     .set("second", 0),
   canUsedTime: 90,
-  singleBuy: true,
+  singleBuy: EBooleanFlag.FALSE,
   singlePrice: 1,
+  ladderList: [
+    {
+      id: genId(),
+      groupNum: 1,
+      groupPrice: 1,
+    },
+  ],
+  autoFill: EBooleanFlag.FALSE,
+  showGroup: EBooleanFlag.FALSE,
+  distributionFlag: EBooleanFlag.TRUE,
+  getDistributionRule: EGetDistributionType.BUY,
+  distribution1MinPrice: 0,
+  distribution1MaxPrice: 0,
+  distribution2MinPrice: 0,
+  distribution2MaxPrice: 0,
+  distributionTotalPrice: 0,
+  signUps: [
+    {
+      id: genId(),
+      contentTypeName: EContentType.INPUT,
+      isNotNull: EBooleanFlag.TRUE,
+      content: "联系人姓名",
+    },
+    {
+      id: genId(),
+      contentTypeName: EContentType.INPUT,
+      isNotNull: EBooleanFlag.TRUE,
+      content: "手机号",
+      disabled: true
+    },
+  ],
 };

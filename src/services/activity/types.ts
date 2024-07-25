@@ -26,6 +26,33 @@ export enum EBooleanFlag {
   FALSE = 0,
 }
 
+export interface ILadderItem {
+  groupNum: number;
+  groupPrice: number;
+}
+export interface ISignUpInfo {
+  id: string;
+  /** 信息项类型 */
+  contentTypeName: EContentType;
+  /** 是否必填 */
+  isNotNull: EBooleanFlag;
+  maxSelect?: number;
+  content: string;
+  disabled?: boolean;
+  options?: string[];
+}
+
+export enum EContentType {
+  INPUT = "INPUT",
+  RADIO = "RADIO",
+  MULTIPLE = "MULTIPLE",
+}
+
+export enum EGetDistributionType {
+  BUY = "buy",
+  SHARE = "share",
+}
+
 export interface ICreateActivityReq {
   coverUrl: string;
   title: string;
@@ -41,14 +68,7 @@ export interface ICreateActivityReq {
   shareCardCoverUrl?: string;
   /** 分享标题 */
   shareCardContent?: string;
-  signUps: {
-    /** 信息类型 */
-    contentTypeName: string;
-    /** 是否必填 */
-    isNotNull: EBooleanFlag;
-    maxSelect: number;
-    content: string;
-  };
+  signUps: ISignUpInfo[];
   activityDetail: {
     groupBy: {
       /** 商品图片 */
@@ -70,6 +90,8 @@ export interface ICreateActivityReq {
       autoFill: EBooleanFlag;
       /** 开启分销 */
       distributionFlag: EBooleanFlag;
+      /** 获取佣金规则 */
+      getDistributionRule: string;
       /** 一级分销最低金额 */
       distribution1MinPrice: number;
       /** 一级分销最高金额 */
@@ -79,31 +101,7 @@ export interface ICreateActivityReq {
       /** 二级分销最高金额 */
       distribution2MaxPrice: number;
       /** 拼团阶梯信息 */
-      ladderList: {
-        groupNum: number;
-        groupPrice: number;
-      }[];
-    };
-    bargain?: {
-      goodsName: number;
-      goodsNum: number;
-      originalPrice: number;
-      originalPriceShow: EBooleanFlag;
-      payPrice: number;
-      /** 底价 */
-      basePrice: number;
-      /** 最低邀请人数 */
-      inviteNumMin: number;
-      /** 最多邀请人数 */
-      inviteNumMax: number;
-      /** 活动结束后是否可继续购买 */
-      activityEndBuy: EBooleanFlag;
-      /** 活动结束后x小时可继续购买 */
-      activityEndBuyHour: number;
-      /** 是否允许按照当前砍至价格购买 */
-      currentPriceBuy: EBooleanFlag;
-      /** 首刀砍掉50% */
-      cutOffHalf: EBooleanFlag;
+      ladderList: ILadderItem[];
     };
   };
 }

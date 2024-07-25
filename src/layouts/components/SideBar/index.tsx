@@ -24,10 +24,10 @@ export default function Navigation({ nav }: INavigationProps) {
               })}
               key={item.path}
               onClick={() => {
-                // if (children.length) {
-                //   history.push(children[0].path);
-                //   return;
-                // }
+                if (children.length) {
+                  history.push(children[0].path);
+                  return;
+                }
                 history.push(item.path);
               }}
             >

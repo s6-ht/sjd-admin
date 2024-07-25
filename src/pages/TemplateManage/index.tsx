@@ -116,10 +116,10 @@ const templateTypes = [
     name: "分销",
     key: ETemplateType.DISTRIBUTION,
   },
-  {
-    name: "砍价",
-    key: ETemplateType.BARGAIN,
-  },
+  // {
+  //   name: "砍价",
+  //   key: ETemplateType.BARGAIN,
+  // },
 ];
 
 interface IFilters extends Omit<IGetTemplateListReq, "type"> {

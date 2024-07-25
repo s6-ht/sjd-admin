@@ -1,0 +1,33 @@
+.addSignUp {
+  padding: 16px 0;
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  :global {
+    .ant-form-item {
+      margin-bottom: 12px !important;
+    }
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 12px;
+    column-gap: 16px;
+
+    .optionItem {
+      position: relative;
+      width: 188px;
+
+      .closeIcon {
+        position: absolute;
+        right: -7px;
+        top: -7px;
+        z-index: 1;
+        color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+      }
+    }
+  }
+}

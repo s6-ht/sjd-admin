@@ -7,12 +7,13 @@ import {
   FormInstance,
   Input,
 } from "antd";
-import { IConfigFormValues } from "..";
 import ConfigItemTitle from "../components/ConfigItemTitle";
 import styles from "../index.less";
 import { EBooleanFlag } from "@/services/activity/types";
 import { useState } from "react";
 import ExpandLabel from "../components/ExpandLabel";
+import { IConfigFormValues } from "@/pages/CreateActivity/types";
+import { transformBooleanToNum } from "@/pages/CreateActivity/helper";
 
 const { RangePicker } = DatePicker;
 
@@ -23,7 +24,6 @@ interface IBaseConfigProps {
 
 const BaseConfig = ({ form, onChangeFormValues }: IBaseConfigProps) => {
   const titleShow = Form.useWatch("titleShow", form);
-
   const [expand, setExpand] = useState(false);
 
   return (
@@ -60,11 +60,9 @@ const BaseConfig = ({ form, onChangeFormValues }: IBaseConfigProps) => {
               <Checkbox
                 checked={titleShow === EBooleanFlag.TRUE}
                 onChange={(e) => {
-                  const val = e.target.checked
-                    ? EBooleanFlag.TRUE
-                    : EBooleanFlag.FALSE;
-                  form.setFieldValue("titleShow", val);
-                  onChangeFormValues({ titleShow: val });
+                  onChangeFormValues({
+                    titleShow: transformBooleanToNum(e.target.checked),
+                  });
                 }}
               >
                 活动页显示标题
@@ -99,12 +97,7 @@ const BaseConfig = ({ form, onChangeFormValues }: IBaseConfigProps) => {
           },
         ]}
       >
-        <RangePicker
-          showTime
-          onChange={(time) => {
-            console.log(time);
-          }}
-        />
+        <RangePicker showTime />
       </Form.Item>
       <Form.Item name="backgroundColor" hidden />
       <div className={styles.customContainer}>
@@ -128,7 +121,6 @@ const BaseConfig = ({ form, onChangeFormValues }: IBaseConfigProps) => {
               <div className={styles.label}>背景颜色</div>
               <ColorPicker
                 onChange={(color) => {
-                  form.setFieldValue("backgroundColor", color);
                   onChangeFormValues({ backgroundColor: color.toRgbString() });
                 }}
               />

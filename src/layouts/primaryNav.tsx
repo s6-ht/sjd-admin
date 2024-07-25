@@ -4,9 +4,14 @@ export const sidebarNav: ISidebarNavItem[] = [
   {
     icon: (props) => <BankOutlined {...props} />,
     name: "活动模版",
-    path: "/templateManage",
+    path: "/",
     keepActive: ["/templateManage", "/createActivity"],
     children: [
+      {
+        name: "活动模版",
+        path: "/templateManage",
+        keepActive: [],
+      },
       {
         name: "创建活动",
         path: "/createActivity",

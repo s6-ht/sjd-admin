@@ -1,4 +1,4 @@
-import { IConfigFormValues } from "../ConfigPanel";
+import { IConfigFormValues } from "../../types";
 import BaseConfigPreview from "./BaseConfig";
 import styles from "./index.less";
 

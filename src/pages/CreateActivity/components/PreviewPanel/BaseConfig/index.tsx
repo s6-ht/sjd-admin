@@ -1,8 +1,8 @@
 import CountDown from "@/components/CountDown";
-import { IConfigFormValues } from "../../ConfigPanel";
 import styles from "../index.less";
 import { useMemo } from "react";
 import { EBooleanFlag } from "@/services/activity/types";
+import { IConfigFormValues } from "@/pages/CreateActivity/types";
 
 interface IBaseConfigPreviewProps {
   formValues: IConfigFormValues;
